@@ -18,6 +18,7 @@ class Mesh
 
     let count: Int32
 
+    @MainActor
     init(vertices: [Float], indices: [UInt32])
     {
         count = Int32(indices.count)

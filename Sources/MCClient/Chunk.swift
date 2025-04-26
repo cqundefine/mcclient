@@ -29,8 +29,8 @@ class Chunk
 
     init(fromNetworkData data: Data, originX: Int, originZ: Int) throws
     {
-        self.originX = originX
-        self.originZ = originZ
+        self.originX = originX * 16
+        self.originZ = originZ * 16
 
         let reader = DataReader(data: data)
         for y in 0..<(384/16) {
@@ -62,6 +62,9 @@ class Chunk
         for section in sections {
             section.appendMesh(generator: generator)
         }
-        mesh = generator.finalize()
+
+        DispatchQueue.main.async {
+            self.mesh = generator.finalize()
+        }
     }
 }

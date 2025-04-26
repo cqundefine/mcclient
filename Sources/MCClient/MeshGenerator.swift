@@ -44,6 +44,7 @@ class MeshGenerator
         indices.append(contentsOf: [begin + 3, begin + 1, begin + 2])
     }
 
+    @MainActor
     func finalize() -> Mesh
     {
         return Mesh(vertices: vertices, indices: indices)

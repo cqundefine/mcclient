@@ -17,6 +17,10 @@ struct Vector3 : Hashable, CustomStringConvertible
         set { data.z = newValue }
     }
 
+    var xz: Vector2 {
+        Vector2(x, z)
+    }
+
     var normalized: Vector3 {
         return Vector3(data: glms_normalize(data))
     }
