@@ -3,7 +3,7 @@ import NIOCore
 
 struct S2CChunkDataLight: S2CPacket
 {
-    static let packetKey = PacketKey(packetID: 0x27,  connectionState: .Play)
+    static let packetKey = PacketKey(packetID: 0x27, connectionState: .Play)
 
     let chunkX: Int32
     let chunkZ: Int32

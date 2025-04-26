@@ -3,7 +3,7 @@ import NIOCore
 
 struct S2CKeepAliveConfiguration: S2CPacket
 {
-    static let packetKey = PacketKey(packetID: 0x04,  connectionState: .Configuration)
+    static let packetKey = PacketKey(packetID: 0x04, connectionState: .Configuration)
 
     let keepAliveID: Int64
 

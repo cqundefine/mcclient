@@ -3,7 +3,7 @@ import NIOCore
 
 struct C2SLoginStartPacket: C2SPacket
 {
-    static let packetKey = PacketKey(packetID: 0x00,  connectionState: .Login)
+    static let packetKey = PacketKey(packetID: 0x00, connectionState: .Login)
 
     let name: String
     let uuid: UUID

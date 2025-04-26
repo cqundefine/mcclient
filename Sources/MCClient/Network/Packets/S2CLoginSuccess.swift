@@ -3,7 +3,7 @@ import NIOCore
 
 struct S2CLoginSuccess: S2CPacket
 {
-    static let packetKey = PacketKey(packetID: 0x02,  connectionState: .Login)
+    static let packetKey = PacketKey(packetID: 0x02, connectionState: .Login)
 
     let uuid: UUID
     let username: String
