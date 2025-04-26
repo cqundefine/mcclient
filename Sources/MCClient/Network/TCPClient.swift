@@ -86,6 +86,12 @@ enum ConnectionState
     case Play
 }
 
+enum TCPClientError : Error
+{
+    case NoActiveConnection
+    case InvalidState(current: ConnectionState, expected: ConnectionState)
+}
+
 class TCPClient
 {
     private let group = MultiThreadedEventLoopGroup(numberOfThreads: 1)
@@ -120,8 +126,8 @@ class TCPClient
             self.channel = channel
             print("Connected")
 
-            self.send(packet: C2SHandshakePacket(serverAddress: self.host, serverPort: self.port)).assertSuccess().whenComplete { result in
-                let _ = self.send(packet: C2SLoginStartPacket(name: "Player", uuid: UUID())).assertSuccess()
+            try! self.send(packet: C2SHandshakePacket(serverAddress: self.host, serverPort: self.port)).assertSuccess().whenComplete { result in
+                let _ = try! self.send(packet: C2SLoginStartPacket(name: "Player", uuid: UUID())).assertSuccess()
             }
         }
 
@@ -130,10 +136,15 @@ class TCPClient
         }
     }
 
-    func send<T: Packet>(packet: T) -> EventLoopFuture<Void>
+    func send<T: C2SPacket>(packet: T) throws -> EventLoopFuture<Void>
     {
         guard let _ = channel else {
-            fatalError("No active connection")
+            throw TCPClientError.NoActiveConnection
+        }
+
+        guard state == T.packetKey.connectionState else {
+            print("Tried to send a packet from \(T.packetKey.connectionState) state while in \(state) state")
+            throw TCPClientError.InvalidState(current: state, expected: T.packetKey.connectionState)
         }
 
         var buffer = allocator.buffer(capacity: 2048)

@@ -1,7 +1,7 @@
 import Foundation
 import NIOCore
 
-struct S2CKeepAliveConfiguration: Packet
+struct S2CKeepAliveConfiguration: S2CPacket
 {
     static let packetKey = PacketKey(packetID: 0x04,  connectionState: .Configuration)
 
@@ -10,10 +10,5 @@ struct S2CKeepAliveConfiguration: Packet
     init(from buffer: inout ByteBuffer) throws
     {
         keepAliveID = buffer.read()
-    }
-
-    func write(to buffer: inout ByteBuffer)
-    {
-        fatalError()   
     }
 }

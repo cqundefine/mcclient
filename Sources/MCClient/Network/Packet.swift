@@ -6,21 +6,25 @@ struct PacketKey : Hashable
     let connectionState: ConnectionState
 }
 
-protocol Packet
+protocol C2SPacket
 {
     static var packetKey: PacketKey { get }
-
-    init(from buffer: inout ByteBuffer) throws
     func write(to buffer: inout ByteBuffer)
 }
 
-typealias PacketHandler<T: Packet> = (T, TCPClient) throws -> Void
+protocol S2CPacket
+{
+    static var packetKey: PacketKey { get }
+    init(from buffer: inout ByteBuffer) throws
+}
+
+typealias PacketHandler<T: S2CPacket> = (T, TCPClient) throws -> Void
 
 class PacketRegistry
 {
-    private var packets: [PacketKey: (type: Packet.Type, handler: (Packet, TCPClient) throws -> ())] = [:]
+    private var packets: [PacketKey: (type: S2CPacket.Type, handler: (S2CPacket, TCPClient) throws -> ())] = [:]
 
-    func register<T: Packet>(_ packetType: T.Type, handler: @escaping PacketHandler<T>)
+    func register<T: S2CPacket>(_ packetType: T.Type, handler: @escaping PacketHandler<T>)
     {
         guard packets[packetType.packetKey] == nil else {
             fatalError("Tried to register already registered packet")

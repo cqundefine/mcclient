@@ -1,6 +1,6 @@
 import NIOCore
 
-struct S2CBlockUpdate: Packet
+struct S2CBlockUpdate: S2CPacket
 {
     static var packetKey = PacketKey(packetID: 0x08, connectionState: .Play)
 
@@ -12,10 +12,5 @@ struct S2CBlockUpdate: Packet
         position = buffer.read()
         let blockIDVar: VarInt = buffer.read()
         blockID = blockIDVar.value
-    }
-
-    func write(to buffer: inout ByteBuffer)
-    {
-        fatalError()
     }
 }

@@ -2,7 +2,7 @@ import NIOCore
 
 let DEFAULT_PROTOCOL_VERSION: UInt32 = 770
 
-struct C2SHandshakePacket: Packet
+struct C2SHandshakePacket: C2SPacket
 {
     static let packetKey = PacketKey(packetID: 0x00,  connectionState: .Login)
 
@@ -24,11 +24,6 @@ struct C2SHandshakePacket: Packet
         self.serverAddress = serverAddress
         self.serverPort = serverPort
         self.nextState = nextState
-    }
-
-    init(from buffer: inout ByteBuffer) throws
-    {
-        fatalError()
     }
 
     func write(to buffer: inout ByteBuffer)

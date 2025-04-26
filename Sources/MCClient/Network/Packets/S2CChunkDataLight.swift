@@ -1,7 +1,7 @@
 import Foundation
 import NIOCore
 
-struct S2CChunkDataLight: Packet
+struct S2CChunkDataLight: S2CPacket
 {
     static let packetKey = PacketKey(packetID: 0x27,  connectionState: .Play)
 
@@ -23,10 +23,5 @@ struct S2CChunkDataLight: Packet
 
         let dataLength: VarInt = buffer.read()
         chunkData = Data(buffer.readBytes(length: Int(dataLength.value))!)
-    }
-
-    func write(to buffer: inout ByteBuffer)
-    {
-        fatalError()   
     }
 }

@@ -1,7 +1,7 @@
 import Foundation
 import NIOCore
 
-struct S2CLoginSuccess: Packet
+struct S2CLoginSuccess: S2CPacket
 {
     static let packetKey = PacketKey(packetID: 0x02,  connectionState: .Login)
 
@@ -12,10 +12,5 @@ struct S2CLoginSuccess: Packet
     {
         uuid = buffer.read()
         username = buffer.read()
-    }
-
-    func write(to buffer: inout ByteBuffer)
-    {
-        fatalError()   
     }
 }
