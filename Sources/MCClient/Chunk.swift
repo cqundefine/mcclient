@@ -58,6 +58,7 @@ class Chunk
 
     private func generateMesh()
     {
+        // TODO: Make mesh generation / update lazy
         let generator = MeshGenerator()
         for section in sections {
             section.appendMesh(generator: generator)
