@@ -1,0 +1,4 @@
+module GLFW3 [system] {
+    header "shim.h"
+    export *
+}
