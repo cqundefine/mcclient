@@ -1,4 +1,3 @@
-import Foundation
 import NIOCore
 
 struct C2SKeepAliveConfiguration: C2SPacket

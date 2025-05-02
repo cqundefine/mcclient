@@ -7,11 +7,20 @@ enum WindowError : Error
     case WindowCreateFailed(Int32)
 }
 
-fileprivate var mousePositionCallback: (Double, Double) -> Void = { x, y in }
+fileprivate var mousePositionCallbacks: [(Double, Double) -> Void] = []
 
 class Window
 {
     let window: OpaquePointer?
+
+    var title: String {
+        get {
+            String(cString: glfwGetWindowTitle(window)!)
+        }
+        set {
+            glfwSetWindowTitle(window, newValue.withCString { $0 })
+        }
+    }
 
     init(width: Int32, height: Int32, title: String) throws
     {
@@ -28,7 +37,7 @@ class Window
         glfwWindowHint(GLFW_CONTEXT_VERSION_MINOR, 5)
         glfwWindowHint(GLFW_OPENGL_PROFILE, GLFW_OPENGL_CORE_PROFILE)
 
-        window = glfwCreateWindow(800, 600, "MCClient", nil, nil)
+        window = glfwCreateWindow(width, height, title, nil, nil)
         guard window != nil else {
             throw WindowError.WindowCreateFailed(glfwGetError(nil))
         }
@@ -38,7 +47,9 @@ class Window
         glfwSetWindowUserPointer(window, withUnsafePointer(to: self) { UnsafeMutableRawPointer(OpaquePointer($0)) })
 
         glfwSetCursorPosCallback(window) { glfwWindow, x, y in
-            mousePositionCallback(x, y)
+            for callback in mousePositionCallbacks {
+                callback(x, y)
+            }
         }
 
         glfwMakeContextCurrent(window)
@@ -108,8 +119,8 @@ class Window
         return glfwGetKey(window, key) == GLFW_PRESS
     }
 
-    func setMousePositionCallback(callback: @escaping (Double, Double) -> Void)
+    func addMousePositionCallback(callback: @escaping (Double, Double) -> Void)
     {
-        mousePositionCallback = callback
+        mousePositionCallbacks.append(callback)
     }
 }

@@ -43,15 +43,19 @@ class Chunk
 
     func draw()
     {
-        guard let mesh = mesh else {
-            preconditionFailure()
-        }
-        mesh.draw()
+        // FIXME: At this stage should we always have a mesh?
+        mesh?.draw()
+    }
+
+    func isBlock(position: Vector3) -> Bool
+    {
+        let section = sectionForY(position.y)
+        return section.blocks[position - Vector3(originX, section.originY, originZ)] != nil
     }
 
     func setBlock(position: Vector3, block: String)
     {
-        let section = sections[(Int(position.y) - originY) / 16]
+        let section = sectionForY(position.y)
         section.setBlock(position: position - Vector3(originX, section.originY, originZ), block: block)
         generateMesh()
     }
@@ -67,5 +71,10 @@ class Chunk
         DispatchQueue.main.async {
             self.mesh = generator.finalize()
         }
+    }
+
+    private func sectionForY(_ y: Float) -> Section
+    {
+        return sections[(Int(y) - originY) / 16]
     }
 }

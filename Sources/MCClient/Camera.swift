@@ -3,11 +3,11 @@ import Foundation
 
 class Camera
 {
-    var position: Vector3
     private(set) var front = Vector3()
+    private(set) var forward = Vector3()
     let up = Vector3(0.0, 1.0, 0.0)
 
-    private let speed: Float = 0.5
+    weak var player: Player?
 
     private var yaw: Float = -90.0
     private var pitch: Float = 0.0
@@ -17,33 +17,15 @@ class Camera
     private var firstMouse = true
 
     var viewMatrix: Matrix4 {
-        Matrix4.lookAt(eye: position, target: position + front, up: up)
+        Matrix4.lookAt(eye: player!.position + Vector3(0, player!.eyeHeight, 0), target: player!.position + Vector3(0, player!.eyeHeight, 0) + front, up: up)
     }
 
-    init(position: Vector3)
+    init(player: Player)
     {
-        self.position = position
-    }
+        self.player = player
 
-    func update()
-    {
-        if window.getKey(key: GLFW_KEY_W) {
-            position += front * speed
-        }
-        if window.getKey(key: GLFW_KEY_S) {
-            position -= front * speed
-        }
-        if window.getKey(key: GLFW_KEY_A) {
-            position -= Vector3.cross(front, up).normalized * speed
-        }
-        if window.getKey(key: GLFW_KEY_D) {
-            position += Vector3.cross(front, up).normalized * speed
-        }
-        if window.getKey(key: GLFW_KEY_SPACE) {
-            position.y += speed
-        }
-        if window.getKey(key: GLFW_KEY_LEFT_SHIFT) {
-            position.y -= speed
+        window.addMousePositionCallback { x, y in
+            self.onMousePositionChange(x: x, y: y)
         }
     }
 
@@ -77,5 +59,10 @@ class Camera
         direction.y = sin(toRadians(degrees: pitch))
         direction.z = sin(toRadians(degrees: yaw)) * cos(toRadians(degrees: pitch))
         front = direction.normalized
+
+        direction = Vector3()
+        direction.x = cos(toRadians(degrees: yaw))
+        direction.z = sin(toRadians(degrees: yaw))
+        forward = direction.normalized
     }
 }

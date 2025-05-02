@@ -13,6 +13,21 @@ extension ByteBuffer
         return readInteger(endianness: .big, as: T.self)!
     }
 
+    mutating func read<T: BinaryFloatingPoint>() -> T
+    {
+        // FIXME: This is not endian correct
+        readBytes(length: MemoryLayout<T>.size)!.reversed().withUnsafeBytes { (ptr: UnsafeRawBufferPointer) -> T in
+                let value = ptr.baseAddress!.assumingMemoryBound(to: T.self).pointee
+                return value
+            }
+    }
+
+    mutating func read() -> Bool
+    {
+        let byte: UInt8 = read()
+        return byte == 0x01
+    }
+
     mutating func read() -> VarInt
     {
         var value: UInt32 = 0
@@ -60,6 +75,20 @@ extension ByteBuffer
     mutating func write<T: FixedWidthInteger>(integer: T)
     {
         writeInteger(integer, endianness: .big)
+    }
+
+    mutating func write<T: BinaryFloatingPoint>(float: T)
+    {
+        switch MemoryLayout<T>.size {
+            case 4:
+                let bits = unsafeBitCast(float, to: UInt32.self)
+                writeInteger(bits, endianness: .big)
+            case 8:
+                let bits = unsafeBitCast(float, to: UInt64.self)
+                writeInteger(bits, endianness: .big)
+            default:
+                fatalError("Unsupported BinaryFloatingPoint size")
+        }
     }
 
     mutating func write(varInt: VarInt)

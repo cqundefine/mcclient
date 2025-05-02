@@ -8,10 +8,10 @@ enum SectionError : Error
 
 class Section
 {
-    var blocks: [Vector3: Vector3] = [:]
+    private(set) var blocks: [Vector3: Vector3] = [:]
     let originY: Int
 
-    weak var parent: Chunk?
+    private(set) weak var parent: Chunk?
 
     init(fromRegionNBT section: NBTValue, parent: Chunk) throws
     {
@@ -118,28 +118,28 @@ class Section
         for (location, color) in blocks {
             let actualLocation = location + Vector3(parent!.originX, originY, parent!.originZ)
 
-            if blocks[location - Vector3(0, 1, 0)] == nil {
-                generator.addSquare(a: actualLocation, color: color, plane: .XZ) // Bottom
+            if !parent!.isBlock(position: actualLocation - Vector3(0, 1, 0)) {
+                generator.addSquare(position: actualLocation, color: color, plane: .XZ) // Bottom
             }
 
-            if blocks[location + Vector3(0, 1, 0)] == nil {
-                generator.addSquare(a: actualLocation + Vector3(0, generator.cellSize, 0), color: color, plane: .XZ) // Top
+            if !parent!.isBlock(position: actualLocation + Vector3(0, 1, 0)) {
+                generator.addSquare(position: actualLocation + Vector3(0, generator.cellSize, 0), color: color, plane: .XZ) // Top
             }
 
-            if blocks[location - Vector3(1, 0, 0)] == nil {
-                generator.addSquare(a: actualLocation, color: color, plane: .YZ) // Left
+            if !parent!.isBlock(position: actualLocation - Vector3(1, 0, 0)) {
+                generator.addSquare(position: actualLocation, color: color, plane: .YZ) // Left
             }
 
-            if blocks[location + Vector3(1, 0, 0)] == nil {
-                generator.addSquare(a: actualLocation + Vector3(generator.cellSize, 0, 0), color: color, plane: .YZ) // Right
+            if !parent!.isBlock(position: actualLocation + Vector3(1, 0, 0)) {
+                generator.addSquare(position: actualLocation + Vector3(generator.cellSize, 0, 0), color: color, plane: .YZ) // Right
             }
 
-            if blocks[location - Vector3(0, 0, 1)] == nil {
-                generator.addSquare(a: actualLocation, color: color, plane: .XY) // Back
+            if !parent!.isBlock(position: actualLocation - Vector3(0, 0, 1)) {
+                generator.addSquare(position: actualLocation, color: color, plane: .XY) // Back
             }
 
-            if blocks[location + Vector3(0, 0, 1)] == nil {
-                generator.addSquare(a: actualLocation + Vector3(0, 0, generator.cellSize), color: color, plane: .XY) // Front
+            if !parent!.isBlock(position: actualLocation + Vector3(0, 0, 1)) {
+                generator.addSquare(position: actualLocation + Vector3(0, 0, generator.cellSize), color: color, plane: .XY) // Front
             }
         }
     }

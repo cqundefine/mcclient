@@ -10,7 +10,6 @@ struct S2CBlockUpdate: S2CPacket
     init(from buffer: inout ByteBuffer) throws
     {
         position = buffer.read()
-        let blockIDVar: VarInt = buffer.read()
-        blockID = blockIDVar.value
+        blockID = (buffer.read() as VarInt).value
     }
 }

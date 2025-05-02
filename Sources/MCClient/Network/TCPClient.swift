@@ -62,12 +62,18 @@ class DecodedPacketHandler: ChannelInboundHandler
         self.client = client
 
         registry.register(S2CLoginSuccess.self, handler: processLoginSuccess)
-        registry.register(S2CKnownPacks.self, handler: processKnownPacks)
+
         registry.register(S2CFinishConfiguration.self, handler: processFinishConfiguration)
         registry.register(S2CKeepAliveConfiguration.self, handler: processKeepAliveConfiguration)
+        registry.register(S2CKnownPacks.self, handler: processKnownPacks)
+
+        registry.register(S2CAddEntity.self, handler: processAddEntity)
+        registry.register(S2CBlockUpdate.self, handler: processBlockUpdate)
         registry.register(S2CKeepAlivePlay.self, handler: processKeepAlivePlay)
         registry.register(S2CChunkDataLight.self, handler: processChunkData)
-        registry.register(S2CBlockUpdate.self, handler: processBlockUpdate)
+        registry.register(S2CLogin.self, handler: processLogin)
+        registry.register(S2CMoveEntityPosition.self, handler: processMoveEntity)
+        registry.register(S2CPlayerPosition.self, handler: processPlayerPosition)
     }
 
     func channelRead(context: ChannelHandlerContext, data: NIOAny)

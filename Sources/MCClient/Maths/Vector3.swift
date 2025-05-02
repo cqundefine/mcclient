@@ -25,6 +25,10 @@ struct Vector3 : Hashable, CustomStringConvertible
         return Vector3(data: glms_normalize(data))
     }
 
+    var intFloored: Vector3 {
+        return Vector3(Int(x), Int(y), Int(z))
+    }
+
     init()
     {
     }
@@ -71,6 +75,11 @@ struct Vector3 : Hashable, CustomStringConvertible
     static func * (a: Vector3, b: Float) -> Vector3
     {
         return Vector3(a.x * b, a.y * b, a.z * b)
+    }
+
+    static func *= (a: inout Vector3, b: Float)
+    {
+        a = Vector3(a.x * b, a.y * b, a.z * b)
     }
 
     static func cross(_ a: Vector3, _ b: Vector3) -> Vector3

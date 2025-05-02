@@ -11,6 +11,12 @@ struct Vector2 : Hashable
         self.y = y
     }
 
+    init(_ x: Int, _ y: Int)
+    {
+        self.x = Float(x)
+        self.y = Float(y)
+    }
+
     static func intDivide(_ a: Vector2, _ b: Vector2) -> Vector2
     {
         return Vector2(floorf(a.x / b.x), floorf(a.y / b.y))

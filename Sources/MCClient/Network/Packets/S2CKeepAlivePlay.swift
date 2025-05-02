@@ -1,9 +1,8 @@
-import Foundation
 import NIOCore
 
 struct S2CKeepAlivePlay: S2CPacket
 {
-    static let packetKey = PacketKey(packetID: 0x1A, connectionState: .Play)
+    static let packetKey = PacketKey(packetID: 0x26, connectionState: .Play)
 
     let keepAliveID: Int64
 

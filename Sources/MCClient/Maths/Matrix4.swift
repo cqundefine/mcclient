@@ -14,9 +14,16 @@ struct Matrix4
         self.data = data
     }
 
-    mutating func translate(translation: Vector3)
+    mutating func translate(_ translation: Vector3)
     {
         data = glms_translate(data, translation.data)
+    }
+
+    static func translation(_ translation: Vector3) -> Matrix4
+    {
+        var matrix = Matrix4()
+        matrix.translate(translation)
+        return matrix
     }
 
     static func perspective(fov: Float, aspectRatio: Float, near: Float, far: Float) -> Matrix4

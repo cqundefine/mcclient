@@ -1,4 +1,3 @@
-import Foundation
 import NIOCore
 
 struct S2CKeepAliveConfiguration: S2CPacket

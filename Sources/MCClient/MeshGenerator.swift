@@ -16,28 +16,28 @@ class MeshGenerator
         case YZ
     }
 
-    func addSquare(a: Vector3, color: Vector3, plane: Plane)
+    func addSquare(position: Vector3, color: Vector3, plane: Plane)
     {
         let begin = UInt32(vertices.count / Vertex.elementCount)
 
         switch plane {
             case .XZ:
-                vertices.append(contentsOf: [a.x,            a.y, a.z + cellSize, color.x, color.y, color.z])
-                vertices.append(contentsOf: [a.x,            a.y, a.z           , color.x, color.y, color.z])
-                vertices.append(contentsOf: [a.x + cellSize, a.y, a.z           , color.x, color.y, color.z])
-                vertices.append(contentsOf: [a.x + cellSize, a.y, a.z + cellSize, color.x, color.y, color.z])
+                vertices.append(contentsOf: [position.x,            position.y, position.z + cellSize, color.x, color.y, color.z])
+                vertices.append(contentsOf: [position.x,            position.y, position.z           , color.x, color.y, color.z])
+                vertices.append(contentsOf: [position.x + cellSize, position.y, position.z           , color.x, color.y, color.z])
+                vertices.append(contentsOf: [position.x + cellSize, position.y, position.z + cellSize, color.x, color.y, color.z])
             
             case .XY:
-                vertices.append(contentsOf: [a.x,            a.y + cellSize, a.z, color.x, color.y, color.z])
-                vertices.append(contentsOf: [a.x,            a.y,            a.z, color.x, color.y, color.z])
-                vertices.append(contentsOf: [a.x + cellSize, a.y,            a.z, color.x, color.y, color.z])
-                vertices.append(contentsOf: [a.x + cellSize, a.y + cellSize, a.z, color.x, color.y, color.z])
+                vertices.append(contentsOf: [position.x,            position.y + cellSize, position.z, color.x, color.y, color.z])
+                vertices.append(contentsOf: [position.x,            position.y,            position.z, color.x, color.y, color.z])
+                vertices.append(contentsOf: [position.x + cellSize, position.y,            position.z, color.x, color.y, color.z])
+                vertices.append(contentsOf: [position.x + cellSize, position.y + cellSize, position.z, color.x, color.y, color.z])
 
             case .YZ:
-                vertices.append(contentsOf: [a.x, a.y + cellSize, a.z           , color.x, color.y, color.z])
-                vertices.append(contentsOf: [a.x, a.y,            a.z           , color.x, color.y, color.z])
-                vertices.append(contentsOf: [a.x, a.y,            a.z + cellSize, color.x, color.y, color.z])
-                vertices.append(contentsOf: [a.x, a.y + cellSize, a.z + cellSize, color.x, color.y, color.z])
+                vertices.append(contentsOf: [position.x, position.y + cellSize, position.z           , color.x, color.y, color.z])
+                vertices.append(contentsOf: [position.x, position.y,            position.z           , color.x, color.y, color.z])
+                vertices.append(contentsOf: [position.x, position.y,            position.z + cellSize, color.x, color.y, color.z])
+                vertices.append(contentsOf: [position.x, position.y + cellSize, position.z + cellSize, color.x, color.y, color.z])
         }
 
         indices.append(contentsOf: [begin + 0, begin + 1, begin + 3])
